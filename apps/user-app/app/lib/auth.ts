@@ -39,6 +39,7 @@ export const authOptions = {
                         password: hashedPassword
                     }
                 });
+                //after creating the user we should send the otp to user's no/email
             
                 return {
                     id: user.id.toString(),
@@ -56,10 +57,11 @@ export const authOptions = {
     secret: process.env.JWT_SECRET || "secret",
     callbacks: {
         // TODO: can u fix the type here? Using any is bad
-        async session({ token, session }: any) {
-            session.user.id = token.sub
-
-            return session
+        async session({token, session} : any){
+            if(session){
+                session.user.id = token.sub;
+                return session;
+            }
         }
     }
   }
